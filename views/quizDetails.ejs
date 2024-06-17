@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Cuestionario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            position: relative;
+            background: url('/img/loginBG.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Capa oscura semi-transparente */
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .btn-secondary {
+            margin-bottom: 20px;
+        }
+
+        img {
+            max-width: 50%;
+            height: 50%;
+            border-radius: 8px;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            color: #333;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="btn btn-secondary"
+            onclick="location.href='/teacher/modules/<%= modulo %>/quizzes'">Volver</button>
+        <h1>Detalles del Cuestionario</h1>
+        <h2>
+            <%= cuestionario.titulo %>
+        </h2>
+        <p>
+            <%= cuestionario.descripcion %>
+        </p>
+        <% if (cuestionario.imagen) { %>
+            <img src="<%= cuestionario.imagen %>" alt="Imagen del cuestionario" class="mb-4">
+            <% } %>
+                <h3>Preguntas</h3>
+                <% if (preguntas && preguntas.length> 0) { %>
+                    <ul class="list-group">
+                        <% preguntas.forEach(pregunta=> { %>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <p class="mb-0">
+                                    <%= pregunta.pregunta %>
+                                </p>
+                                <a href="/teacher/quizzes/<%= cuestionario.id %>/editQuestion/<%= pregunta.id %>/<%= cuestionario.modulo_id %>"
+                                    class="btn btn-primary btn-sm">Editar Pregunta</a>
+                            </li>
+                            <% }); %>
+                    </ul>
+                    <% } else { %>
+                        <p>No hay preguntas asociadas a este cuestionario.</p>
+                        <% } %>
+                            <a href="/teacher/quizzes/<%= cuestionario.id %>/createQuestion/<%= cuestionario.modulo_id %>"
+                                class="btn btn-success mt-3">Agregar Pregunta</a>
+                            <a href="/teacher/quizzes/<%= cuestionario.id %>/edit" class="btn btn-warning mt-3">Editar
+                                Cuestionario</a>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

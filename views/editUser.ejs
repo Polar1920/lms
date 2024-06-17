@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+</head>
+<body>
+    <h1>Editar Usuario</h1>
+    <form action="/admin/users/<%= user.id %>?_method=PUT" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="<%= user.nombre %>">
+        <br>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" value="<%= user.apellido %>">
+        <br>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>">
+        <br>
+        <label for="tipo">Tipo de usuario:</label>
+        <select id="tipo" name="tipo" required>
+            <option value="admin" <%= user.tipo === 'admin' ? 'selected' : '' %>>Admin</option>
+            <option value="profesor" <%= user.tipo === 'profesor' ? 'selected' : '' %>>Profesor</option>
+            <option value="estudiante" <%= user.tipo === 'estudiante' ? 'selected' : '' %>>Estudiante</option>
+        </select>
+        <br>
+        <label for="grado">Grado:</label>
+        <select id="grado" name="grado">
+            <option value="">Ninguno</option>
+            <% grados.forEach(grado => { %>
+                <option value="<%= grado.id %>" <%= user.grado === grado.id ? 'selected' : '' %>><%= grado.nombre %></option>
+            <% }) %>
+        </select>
+        <br>
+        <button type="submit">Actualizar</button>
+    </form>
+</body>
+</html>

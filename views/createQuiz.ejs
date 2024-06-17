@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuestionario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+        <button class="btn btn-secondary" onclick="location.href='/teacher/modules/<%= moduloId %>/quizzes'">Volver</button>
+        <h1 class="mt-5">Crear Cuestionario</h1>
+        <form action="/teacher/modules/<%= moduloId %>/createQuiz" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre del Cuestionario:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="quizImage" class="form-label">Imagen:</label>
+                <input class="form-control" type="file" id="quizImage" name="quizImage">
+            </div>
+            <button type="submit" class="btn btn-primary">Crear Cuestionario</button>
+        </form>
+        <button class="btn btn-secondary mt-3" onclick="history.back()">Volver</button>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

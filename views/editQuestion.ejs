@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pregunta</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            position: relative;
+            background: url('/img/loginBG.png') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .btn-secondary {
+            margin-bottom: 20px;
+        }
+
+        h1, h3, label {
+            color: #333;
+        }
+
+        .mb-3 img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+
+        .btn-danger {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <button class="btn btn-secondary mb-3" onclick="location.href='/teacher/quizzes/<%= quizId %>/details/<%= moduleId %>'">Volver</button>
+        <h1>Editar Pregunta</h1>
+        <form action="/teacher/quizzes/<%= quizId %>/editQuestion/<%= pregunta.id %>" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="quizId" value="<%= quizId %>">
+            <input type="hidden" name="moduleId" value="<%= moduleId %>">
+            <div class="mb-3">
+                <label for="pregunta" class="form-label">Pregunta:</label>
+                <input type="text" class="form-control" id="pregunta" name="pregunta" value="<%= pregunta.pregunta %>" required>
+            </div>
+            <div class="mb-3">
+                <label for="questionImage" class="form-label">Imagen de la pregunta (opcional):</label>
+                <% if (pregunta.imagen) { %>
+                    <img src="<%= pregunta.imagen %>" alt="Imagen de la pregunta">
+                <% } %>
+                <input type="file" class="form-control" id="questionImage" name="questionImage">
+            </div>
+
+            <h3>Respuestas</h3>
+            <div id="respuestas">
+                <% respuestas.forEach((respuesta, index) => { %>
+                    <div class="mb-3">
+                        <label for="respuesta<%= index %>" class="form-label">Respuesta:</label>
+                        <input type="text" class="form-control" id="respuesta<%= index %>" name="respuestas[<%= index %>][texto]" value="<%= respuesta.respuesta %>" required>
+                        <label for="esCorrecta<%= index %>" class="form-label">¿Es correcta?</label>
+                        <select class="form-select" id="esCorrecta<%= index %>" name="respuestas[<%= index %>][es_correcta]">
+                            <option value="false" <%= !respuesta.es_correcta ? 'selected' : '' %>>No</option>
+                            <option value="true" <%= respuesta.es_correcta ? 'selected' : '' %>>Sí</option>
+                        </select>
+                        <input type="hidden" name="respuestas[<%= index %>][id]" value="<%= respuesta.id %>">
+                        <input type="hidden" name="respuestas[<%= index %>][eliminar]" value="false">
+                        <button type="button" class="btn btn-danger" onclick="eliminarRespuesta(this)">Eliminar</button>
+                    </div>
+                <% }); %>
+            </div>
+
+            <button type="button" class="btn btn-outline-primary mb-3" onclick="agregarRespuesta()">Agregar Respuesta</button>
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let contadorRespuestas = <%= respuestas.length %>;
+
+        function agregarRespuesta() {
+            const div = document.createElement('div');
+            div.classList.add('mb-3');
+            div.innerHTML = `
+                <label for="respuesta${contadorRespuestas}" class="form-label">Respuesta:</label>
+                <input type="text" class="form-control" id="respuesta${contadorRespuestas}" name="respuestas[${contadorRespuestas}][texto]" required>
+                <label for="esCorrecta${contadorRespuestas}" class="form-label">¿Es correcta?</label>
+                <select class="form-select" id="esCorrecta${contadorRespuestas}" name="respuestas[${contadorRespuestas}][es_correcta]">
+                    <option value="false">No</option>
+                    <option value="true">Sí</option>
+                </select>
+                <input type="hidden" name="respuestas[${contadorRespuestas}][eliminar]" value="false">
+                <button type="button" class="btn btn-danger mt-2" onclick="eliminarRespuesta(this)">Eliminar</button>
+            `;
+            document.getElementById('respuestas').appendChild(div);
+            contadorRespuestas++;
+        }
+
+        function eliminarRespuesta(button) {
+            const div = button.parentElement;
+            const eliminarInput = div.querySelector('input[name^="respuestas"][name$="[eliminar]"]');
+            eliminarInput.value = "true";
+            div.style.display = "none"; // Ocultar el div
+        }
+    </script>
+</body>
+
+</html>

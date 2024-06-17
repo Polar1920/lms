@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Panel de Administrador</h1>
+    <p>Bienvenido al panel de administrador. Desde aquí puedes gestionar usuarios y grados.</p>
+    
+    <h2>Usuarios</h2>
+    <button onclick="location.href='/admin/createUser'">Crear Usuario</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Username</th>
+                <th>Tipo</th>
+                <th>Grado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (users && users.length) { %>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.nombre %></td>
+                        <td><%= user.apellido %></td>
+                        <td><%= user.username %></td>
+                        <td><%= user.tipo %></td>
+                        <td>
+                            <% 
+                                let gradeName = 'Ninguno';
+                                for (let grade of grades) {
+                                    if (grade.id = user.grado) {
+                                        gradeName = grade.nombre;
+                                        break;
+                                    }
+                                }
+                            %>
+                            <%= gradeName %>
+                        </td>
+                        <td>
+                            <button onclick="location.href='/admin/editUser/<%= user.id %>'">Editar</button>
+                            <button onclick="location.href='/admin/deleteUser/<%= user.id %>'">Eliminar</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="6">No hay usuarios disponibles</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <h2>Grados</h2>
+    <button onclick="location.href='/admin/createGrade'">Crear Grado</button>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (grades && grades.length) { %>
+                <% grades.forEach(grade => { %>
+                    <tr>
+                        <td><%= grade.nombre %></td>
+                        <td>
+                            <button onclick="location.href='/admin/editGrade/<%= grade.id %>'">Editar</button>
+                            <button onclick="location.href='/admin/deleteGrade/<%= grade.id %>'">Eliminar</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="2">No hay grados disponibles</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>

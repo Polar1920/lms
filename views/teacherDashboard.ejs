@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Profesor</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top {
+            max-height: 200px; /* Ajusta el tamaño máximo de la imagen */
+            object-fit: cover; /* Escala la imagen para cubrir el área especificada */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Panel de Profesor</h1>
+        <button class="btn btn-primary mb-3" onclick="location.href='/teacher/modules/create'">Crear Módulo</button>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <% if (modulos && modulos.length) { %>
+                <% modulos.forEach(modulo => { %>
+                    <div class="col">
+                        <div class="card h-100 position-relative">
+                            <img src="<%= modulo.imagen %>" class="card-img-top" alt="Imagen del módulo">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= modulo.nombre %></h5>
+                                <p class="card-text"><%= modulo.descripcion %></p>
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" onclick="location.href='/teacher/modules/<%= modulo.id %>/edit'">Editar</button>
+                                    <form action="/teacher/modules/<%= modulo.id %>/delete" method="POST" class="position-absolute top-0 end-0 mt-2 me-2">
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>                                    
+                                    <button class="btn btn-secondary" onclick="location.href='/teacher/modules/<%= modulo.id %>/quizzes'">Gestionar Cuestionarios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">No hay módulos disponibles</h5>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+        
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

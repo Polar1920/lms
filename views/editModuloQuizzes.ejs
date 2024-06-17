@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Módulo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top {
+            max-height: 200px;
+            /* Ajusta el tamaño máximo de la imagen */
+            object-fit: cover;
+            /* Escala la imagen para cubrir el área especificada */
+        }
+
+        .module-details,
+        .grades-section,
+        .quizzes-section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <button class="btn btn-secondary" onclick="location.href='/teacher/dashboard'">Volver al Dashboard</button>
+        <!-- Gestión de Cuestionarios -->
+        <div class="quizzes-section">
+            <h2>Gestionar Cuestionarios</h2>
+            <button class="btn btn-success mb-3"
+                onclick="location.href='/teacher/modules/<%= modulo.id %>/createQuiz'">Crear Cuestionario</button>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <% if (cuestionarios && cuestionarios.length) { %>
+                    <% cuestionarios.forEach(cuestionario=> { %>
+                        <div class="col">
+                            <div class="card h-100 position-relative">
+                                <img src="<%= cuestionario.imagen %>" class="card-img-top"
+                                    alt="Imagen del cuestionario">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= cuestionario.titulo %>
+                                    </h5>
+                                    <p class="card-text">
+                                        <%= cuestionario.descripcion %>
+                                    </p>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary"
+                                            onclick="location.href='/teacher/quizzes/<%= cuestionario.id %>/details/<%= modulo.id %>'">Ver</button>
+                                        <form action="/teacher/modules/<%= modulo.id %>/removeQuiz" method="POST"
+                                            class="position-absolute top-0 end-0 mt-2 me-2">
+                                            <input type="hidden" name="quizId" value="<%= cuestionario.id %>">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                            <% } else { %>
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">No hay cuestionarios disponibles</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
